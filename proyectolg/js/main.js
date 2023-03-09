@@ -57,19 +57,6 @@ class Factura {
   }
 }
 
-let carrito = new Array(10);
-
-prodArray.add[0];
-for (i = 0; i < carrito.length; i++) {
-  cargoProducto().carrito.add[i];
-
-  try {
-    throw new Error("Esta superando el limite permito en el carrito");
-  } catch (err) {
-    console.error(err.message);
-  }
-}
-
 const producto1 = new PRODUCTOS(
   "1",
   "Apple",
@@ -136,6 +123,21 @@ const producto8 = new PRODUCTOS(
 );
 let rta = "";
 
+let prodArray = [
+  { key: 1, producto1 },
+  { key: 2, producto2 },
+  { key: 3, producto3 },
+  { key: 4, producto4 },
+  { key: 5, producto5 },
+  { key: 6, producto6 },
+  { key: 7, producto7 },
+  { key: 8, producto8 },
+];
+
+for (i = 0; i < prodArray.length; i++) {
+  console.log(prodArray[i]);
+}
+
 do {
   alert(
     "Bienvenido a COMMERCE Tech \n¿Que producto desear seleccionar? \n" +
@@ -160,124 +162,35 @@ do {
     prompt("Coloque el Codigo de producto que desea comprar")
   );
 
-  if (codigoArt == producto1.id) {
-    alert(producto.descripcion());
+  if (codigoArt < prodArray.length) {
+    let produ = prodArray.find((elemento) => elemento.key == codigoArt);
+    console.log(produ);
+    //    alert(prodArray.toString());
   }
-
-  // alert(
-  //     "Los productos con los que contamos son los siguientes: \n" + producto1.descripcion() + "\n" + producto2.descripcion() + "\n" + producto3.descripcion() + "\n" + producto4.descripcion() + "\n" + producto5.descripcion() + "\n" + producto6.descripcion() + "\n" + producto7.descripcion() + "\n" + producto8.descripcion() )
-  //     let cant1 = Number(prompt("¿Cuantos " + producto1.modelo + " desea comprar?"))
-  //     let cant2 = Number(prompt("¿Cuantos " + producto2.modelo + " desea comprar?"))
-  //     let cant3 = Number(prompt("¿Cuantos " + producto3.modelo + " desea comprar?"))
-  //     let cant4 = Number(prompt("¿Cuantos " + producto4.modelo + " desea comprar?"))
-  //     let cant5 = Number(prompt("¿Cuantos " + producto5.modelo + " desea comprar?"))
-  //     let cant6 = Number(prompt("¿Cuantos " + producto6.modelo + " desea comprar?"))
-  //     let cant7 = Number(prompt("¿Cuantos " + producto7.modelo + " desea comprar?"))
-  //     let cant8 = Number(prompt("¿Cuantos " + producto8.modelo + " desea comprar?"))
-
-  cancela = cancelar(cant1, cant2, cant3, cant4, cant5, cant6, cant7, cant8);
-
-  if (
-    cancela == true ||
-    cant1 == 0 ||
-    cant3 == 0 ||
-    cant4 == 0 ||
-    cant5 == 0 ||
-    cant6 == 0 ||
-    cant7 == 0 ||
-    cant8 == 0
-  ) {
-    alert("Usted ha cancelado el ingreso de datos");
-    break;
-  }
-
-  if (cant1 <= producto1.stock && cant1 >= 1) {
-    alert(
-      "¡Gracias por su compra! El/Los " +
-        cant1 +
-        " producto-s " +
-        producto1.modelo +
-        " se enviaran los mas pronto a su domicilio!"
+  let aux;
+  if (codigoArt == producto1.id && producto1.stock > 0) {
+    let cantidad = Number(
+      prompt(
+        "Ha seleccionado " +
+          producto1.descripcionh() +
+          "\n" +
+          "Indique la cantidad deseada: "
+      )
     );
-    producto1.stock = producto1.stock - cant1;
-  } else if (cant1 < 0) {
-    alert("El numero ingresado no es valido.");
+    aux = cantidad;
   } else {
     alert(
-      "La cantidad de: " +
-        cant1 +
-        " excede a nuestro stock de: " +
-        producto1.stock
+      "Ha ocurrido un error con el producto selecionado el cual no poseia stock o no existe"
     );
   }
-
-  if (cant2 <= producto2.stock && cant2 >= 1) {
-    alert(
-      "¡Gracias por su compra! El/Los " +
-        cant2 +
-        " producto-s " +
-        producto2.modelo +
-        " se enviaran los mas pronto a su domicilio!"
-    );
-
-    producto2.stock = producto2.stock - cant2;
-  } else if (cant2 < 0) {
-    alert("El numero ingresado no es valido.");
+  if (producto1.stock > aux) {
+    let precioCantidad = aux * producto1.precio;
+    let precioFinal = precioCantidad + precioCantidad * 0.21;
+    alert(producto1.descripcion() + "\nPrecio Total: $ " + precioFinal);
   } else {
-    alert(
-      "La cantidad de: " +
-        cant2 +
-        " excede a nuestro stock de: " +
-        producto2.stock
-    );
+    alert("No hay stock para este producto segun la cantidad indicada");
   }
 
-  if (cant1 > 0 || cant2 > 0) {
-    let factura = new Factura(
-      producto1.precio * cant1 + producto2.precio * cant2
-    );
-
-    alert(
-      "El precio del producto es de: $" +
-        factura.precio +
-        "\n  Artiulo encargado: " +
-        producto1.marca +
-        " Cant: " +
-        cant1 +
-        " Precio unitario: " +
-        producto1.precio +
-        "\n  Articulo encargado: " +
-        producto2.marca +
-        " Cant: " +
-        cant2 +
-        " Precio unitario: " +
-        producto2.precio +
-        "\nIVA: $" +
-        factura.detalle_iva() +
-        "\nPrecio Final: $" +
-        factura.precio_con_iva()
-    );
-  }
-
-  rta = prompt(
-    'Desea seguir comprando? Pulse cualquier letra para seguir o ingrese "ESC" para salir.'
-  );
-
-  cancela = cancelar(rta, " ");
-  if (cancela == true) {
-    alert("Usted ha cancelado el ingreso de datos");
-    break;
-  } else {
-    rta = rta.toUpperCase();
-  }
-} while (rta != "ESC" && producto1.stock > 0);
-
-if (producto1.stock == 0) {
-  alert("Vendimos todo!");
-} else {
-  alert(
-    "Aún quedan " +
-      Number(producto1.stock + producto2.stock) +
-      " remeras para vender."
-  );
-}
+  // alert(producto.descripcion());
+  let aux2 = prompt("Escriba SALIR para finalizar");
+} while (rta != "ESC" && aux2 == "SALIR");
